@@ -15,7 +15,7 @@ def get_uniq_active_users():
 
 
 def get_proc_info():
-    total = -2
+    total = 0
     collector = {}
     max_cpu_user = 0.0
     max_mem_user = 0.0
@@ -26,12 +26,12 @@ def get_proc_info():
     result = "Пользовательских процессов: \n "
     ps = run(["ps", "aux"], capture_output=True)
     for process in ps.stdout.decode().split("\n"):
-        total += 1
         if process == "":
             continue
         name = process.split()[0]
         if name == "USER":
             continue
+        total += 1
         total_cpu_usage += float(process.split()[2])
         if float(process.split()[2]) > float(max_cpu_user):
             max_cpu_user = process.split()[2]
@@ -49,7 +49,7 @@ def get_proc_info():
     for assemble_keys, assemble_value in sorted_collector:
         result += f'{assemble_keys}: {assemble_value}, \n '
 
-    return f'Процессов запущено: {total}', result, \
+    return f'Процессов запущено: {total}\n', result, \
         f'Всего памяти используется:{round(total_mem_usage, 1)}%\n' \
         f'Всего CPU используется: {round(total_cpu_usage, 1)}%\n'\
         f'Больше всего памяти использует:{max_mem_user_name} = {max_mem_user}%\n' \
