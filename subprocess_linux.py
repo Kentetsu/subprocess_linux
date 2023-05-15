@@ -28,7 +28,6 @@ def get_proc_info():
         if float(process.split()[2]) > float(max_cpu_user):
             max_cpu_user = process.split()[2]
             max_cpu_user_name = process.split()[10]
-        total_cpu_usage += float(process.split()[2])
         if float(process.split()[3]) > float(max_mem_user):
             max_mem_user = float(process.split()[3])
             max_mem_user_name = process.split()[10]
@@ -39,9 +38,9 @@ def get_proc_info():
         else:
             collector[name] += 1
         if len(max_mem_user_name) > 20:
-            max_mem_user_name = max_mem_user_name[-20:]
+            max_mem_user_name = max_mem_user_name[:20]
         if len(max_cpu_user_name) > 20:
-            max_cpu_user_name = max_cpu_user_name[-20:]
+            max_cpu_user_name = max_cpu_user_name[:20]
 
     sorted_collector = sorted(collector.items(), key=lambda x: x[1], reverse=True)
     for assemble_keys, assemble_value in sorted_collector:
